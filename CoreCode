@@ -4,7 +4,16 @@ int main(){
     if(initClientRobot() !=0){
         std::cout<<"Error initializing robot"<<std::endl;
     }
-
+    //declare method:
+    // double v_goLeft;
+    // double v_goRight;
+    //difference in speed left/right
+    // double dvLeft
+        //v1 = v_goLeft + dvLeft(set_motor(...V_l));
+            //dvLeft = Kp.error;
+    //double dvRight
+        //v1 = v_goRight + dvRight(set_motor(...V_l));
+        //dvRight = Kp.error;
     double vLeft = 3.0;
     double vRight = 3.0;
     //create method -- takePicture(); 
@@ -24,7 +33,11 @@ int main(){
             std::cout<<isWhite<<" ";
             //std::cout<<pix<<" ";
         }
-    }
+        std::cout<<std::endl;
+        setMotors(vLeft, vRight);
+        std::cout<<" vLeft="<<vLeft<<" vRight="<<vRight<<std::endl;
+        usleep(10000);
+    }   //while
 
 
-}
+} //main
