@@ -1,0 +1,56 @@
+#include "robot.hpp"
+
+int main(){
+	if (initClientRobot() !=0){
+		std::cout<<" Error initializing robot"<<std::endl;
+	}
+    double vLeft = 15.0;
+    double vRight = 15.0;
+
+    while(1){
+		takePicture();
+		SavePPMFile("i0.ppm",cameraView);
+		
+		//variables for sides or area of white line
+		int lLeft = cameraView.width;
+		int lRight = 0;
+		
+		int row = cameraView.height/2;
+		for ( int column = 0; column < cameraView.width ; column++) {
+			int curPix = get_pixel(cameraView, row, column, 3);	//getting current pixel
+			//Checking to see if pixel is white
+			if(curPix > 250) {
+				
+				//setting dimensions of line
+				if (column < lLeft) {
+					lLeft = column;
+				}
+				else if(column > lRight) {
+					lRight = column;
+				}
+			}
+		}
+		//calculate line centre
+		int centre = (int)((lLeft + lRight)/2);
+		
+		//check if line if is in centre of view and change direction accordingly
+		if (centre < (cameraView.width/2)) {
+			vRight = 25.0;
+			vLeft = 15.0;
+		}
+		else if (centre > (cameraView.width/2)) {
+			vRight = 15.0;
+			vLeft = 25.0;
+		}
+		else if(centre == (cameraView.width/2)) {
+			vRight = 15.0;
+			vLeft = 15.0;
+		}
+		
+		setMotors(vLeft,vRight);
+		std::cout<<" vLeft="<<vLeft<<"  vRight="<<vRight<<std::endl;
+		
+		usleep(10000);
+	} //while
+
+} // main
