@@ -1,43 +1,37 @@
+
 #include "robot.hpp"
-//info from lecture;;
 int main(){
-    if(initClientRobot() !=0){
-        std::cout<<"Error initializing robot"<<std::endl;
-    }
-    //declare method:
-    // double v_goLeft;
-    // double v_goRight;
-    //difference in speed left/right
-    // double dvLeft
-        //v1 = v_goLeft + dvLeft(set_motor(...V_l));
-            //dvLeft = Kp.error;
-    //double dvRight
-        //v1 = v_goRight + dvRight(set_motor(...V_l));
-        //dvRight = Kp.error;
-    double vLeft = 3.0;
-    double vRight = 3.0;
-    //create method -- takePicture(); 
-    //create method -- SavePPMFile("i0.ppm", cameraView);
+	if (initClientRobot() !=0){
+		std::cout<<" Error initializing robot"<<std::endl;
+	}
+    double vLeft = 15.0;
+    double vRight = 15.0;
+    takePicture();
+    SavePPMFile("i0.ppm",cameraView);
+    
     while(1){
-        takePicture();
-        double error = 0.0;
-        for(int i = 0; i < 150; i++){
-            int pix = get_pixel(cameraView, 50, i , 3);
-            int isWhite;
-            if(pix > 250){
-                isWhite = 1;
-                error = error +
-            } else{
-                isWhite = 0;
-            }
-            std::cout<<isWhite<<" ";
-            //std::cout<<pix<<" ";
-        }
-        std::cout<<std::endl;
-        setMotors(vLeft, vRight);
-        std::cout<<" vLeft="<<vLeft<<" vRight="<<vRight<<std::endl;
-        usleep(10000);
-    }   //while
+		takePicture();
+		double error = 0.0;
+		for(int i = 0; i < 150; i++){
+			int pix = get_pixel(cameraView, 50, i, 3);
+			int isWhite;
+			if(pix > 150){
+				isWhite = 1;
+				
+			}
+			else{
+				isWhite = 0;
+			}
+			std::cout<<isWhite<<" ";
+			//std::cout<<pix<<" ";
+		}
+	}
+    std::cout<<std::endl;
+    
+    
+      setMotors(vLeft,vRight);   
+      //std::cout<<" vLeft="<<vLeft<<"  vRight="<<vRight<<std::endl;
+       usleep(10000);
+  //} //while
 
-
-} //main
+} // main
