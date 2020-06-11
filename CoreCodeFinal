@@ -4,8 +4,9 @@ int main(){
 	if (initClientRobot() !=0){
 		std::cout<<" Error initializing robot"<<std::endl;
 	}
-    double vLeft = 15.0;
-    double vRight = 15.0;
+	double vBase = 15.0;
+    double vLeft = vBase;
+    double vRight = vBase;
 
     while(1){
 		takePicture();
@@ -33,19 +34,13 @@ int main(){
 		//calculate line centre
 		int centre = (int)((lLeft + lRight)/2);
 		
-		//check if line if is in centre of view and change direction accordingly
-		if (centre < (cameraView.width/2)) {
-			vRight = 25.0;
-			vLeft = 15.0;
-		}
-		else if (centre > (cameraView.width/2)) {
-			vRight = 15.0;
-			vLeft = 25.0;
-		}
-		else if(centre == (cameraView.width/2)) {
-			vRight = 15.0;
-			vLeft = 15.0;
-		}
+        //calculate error
+		double error = centre - cameraView.width/2;
+		
+        //calculate change in moters
+        double dv = 0.05*error;
+		vLeft = vBase + dv;
+		vRight = vBase - dv;
 		
 		setMotors(vLeft,vRight);
 		std::cout<<" vLeft="<<vLeft<<"  vRight="<<vRight<<std::endl;
