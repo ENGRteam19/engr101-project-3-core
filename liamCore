@@ -1,50 +1,51 @@
 int main(){
-	if (initClientRobot() !=0){
-		std::cout<<" Error initializing robot"<<std::endl;
-	}
+    if (initClientRobot() !=0){
+        std::cout<<" Error initializing robot"<<std::endl;
+    }
     double vLeft = 10.0;
     double vRight = 10.0;
     takePicture();
     SavePPMFile("i0.ppm",cameraView);
     while(1){
-		//
-		int lLeft = cameraView.width;
-		int lRight = 0;
-		
-		int row = cameraView.height/2;
-		for ( int column = 0; column < cameraView.width ; column++) {
-			int curPix = get_pixel(cameraView, row, column, 3);	//getting current pixel
-			//Checking to see if pixel is white
-			if(curPix > 250) {
-				
-				if (column < lLeft) {
-					lLeft = column;
-				}
-				else if(column > lRight) {
-					lRight = column;
-				}
-			}
-		}
+        //
+        int lLeft = cameraView.width;
+        int lRight = 0;
+        
+        int row = cameraView.height/2;
+        // count = 0
+        for ( int column = 0; column < cameraView.width ; column++) {
+            int curPix = get_pixel(cameraView, row, column, 3);    //getting current pixel
+            //Checking to see if pixel is white
+            if(curPix > 250) {
+                // count++
+                if (column < lLeft) {
+                    lLeft = column;
+                }
+                else if(column > lRight) {
+                    lRight = column;
+                }
+            }
+        }
+        // if count is high, intesection
+        int centre = (int)((lLeft + lRight)/2);
+        
+        if (centre < (int)cameraView.width/2) {
+            vRight = 15.0;
+            vLeft = 10.0;
+        }
+        else if (centre > (int)cameraView.width/2) {
+            vRight = 10.0;
+            vLeft = 15.0;
+        }
+        else if(centre == (int)cameraView.width/2) {
+            vRight = 10.0;
+            vLeft = 10.0;
+        }
 
-		int centre = (int)((lLeft + lRight)/2);
-		
-		if (centre < (int)cameraView.width/2) {
-			vRight = 15.0;
-			vLeft = 10.0;
-		}
-		else if (centre > (int)cameraView.width/2) {
-			vRight = 10.0;
-			vLeft = 15.0;
-		}
-		else if(centre == (int)cameraView.width/2) {
-			vRight = 10.0;
-			vLeft = 10.0;
-		}
-
-		setMotors(vLeft,vRight);
-		std::cout<<" vLeft="<<vLeft<<"  vRight="<<vRight<<std::endl;
-		
-		usleep(10000);
-	} //while
+        setMotors(vLeft,vRight);
+        std::cout<<" vLeft="<<vLeft<<"  vRight="<<vRight<<std::endl;
+        
+        usleep(10000);
+    } //while
 
 } // main
